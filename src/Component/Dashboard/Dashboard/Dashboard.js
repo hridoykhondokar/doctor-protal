@@ -12,31 +12,34 @@ const containerStyles = {
 
 const Dashboard = () => {
 
-    const [selectedDate, setSelectedDate] = useState(new Date());
     const [appointment, setAppointment] = useState([])
+    const [selectedDate, setSelectedDate] = useState();
     const handleDateChange = date => {
-
-       
-        let year = date.getFullYear();
-        let month = (1 + date.getMonth()).toString().padStart(2, '0');
-        let day = date.getDate().toString().padStart(2, '0');
-        const appointmentDate = month  + day  + year;
-        setSelectedDate(appointmentDate)
-    
-
-
+        convertedDate(date)
     }
 
+    
+    const convertedDate = (takingNewDate) => {
+        let year = takingNewDate.getFullYear();
+        let month = (1 + takingNewDate.getMonth()).toString().padStart(2, '0');
+        let day = takingNewDate.getDate().toString().padStart(2, '0');
+        const appointmentDate = month+ '-'  + day + '-'  + year;
+        setSelectedDate(appointmentDate)
+    }
+
+    
+    if(!selectedDate){
+        convertedDate(new Date())
+    }
+    
     useEffect(() => {
-        console.log(selectedDate)
-         
-        fetch('http://localhost:5000/appointmentByDate', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ date: selectedDate})
-        })
-            .then(res => res.json())
-            .then(data => setAppointment(data))
+         if(selectedDate){
+             fetch(`http://localhost:5000/appointmentByDate/`+ selectedDate)
+             .then(res => res.json())
+             .then(data => setAppointment(data))
+
+         }
+
     },[selectedDate])
 
     return (
@@ -60,3 +63,10 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+
+
+
+

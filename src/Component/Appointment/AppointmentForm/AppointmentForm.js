@@ -31,7 +31,7 @@ const AppointmentForm = ({ modalIsOpen, closeModal, appointmentOn, date }) => {
         let month = (1 + date.getMonth()).toString().padStart(2, '0');
         let day = date.getDate().toString().padStart(2, '0');
       
-        const appointmentDate = month  + day  + year;
+        const appointmentDate = month + '-' + day + '-' + year;
         // return month + '/' + day + '/' + year;
 
         data.service = appointmentOn;
